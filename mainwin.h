@@ -23,8 +23,14 @@ private:
     void InitializeComponent();
     void SetupLayouts();
     void ConnectSignals();
+
+    void showAllObj();
+    void showDayObj();
+    void showWeekObj();
+    void showMonthObj();
     //myVar
     QPushButton* buttonAddObj;
+    QRadioButton* radioAll;
     QRadioButton* radioDay;
     QRadioButton* radioWeek;
     QRadioButton* radioMonth;
