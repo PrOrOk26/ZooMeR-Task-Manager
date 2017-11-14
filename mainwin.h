@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include "addobjdialog.h"
 
+
 namespace Ui {
 class Widget;
 }
@@ -24,10 +25,11 @@ private:
     void SetupLayouts();
     void ConnectSignals();
 
-    void showAllObj();
-    void showDayObj();
-    void showWeekObj();
-    void showMonthObj();
+    void ShowAllObj();
+    void ShowDayObj();
+    void ShowWeekObj();
+    void ShowMonthObj();
+
     //myVar
     QPushButton* buttonAddObj;
     QRadioButton* radioAll;
