@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QtWidgets>
 
+
 class AddObjDialog : public QDialog {
     Q_OBJECT
 private:
@@ -18,6 +19,8 @@ private:
     QLabel* lDescription;
     QLabel* lNotification;
 
+    QLabel* lWarning;
+
     QLineEdit* leName;
     QDateEdit* deDate;
     QTimeEdit* teDate;
@@ -31,11 +34,15 @@ private:
     QVBoxLayout* mlay;
     QHBoxLayout* layForButton;
     QHBoxLayout* layForDate;
-public:
-    AddObjDialog(QWidget *parent = 0);
+
+    //Functions
     void InitializeComponent();
     void SetupLayouts();
     void ConnectSignals();
+public:
+    AddObjDialog(QWidget *parent = 0);
+    bool isFilled();
+    void ShowWarning();
 public slots:
 
 
