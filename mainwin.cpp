@@ -7,8 +7,10 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    // это пошел мой код
+
     this->setWindowTitle("Планировщик задач");
+
+
     InitializeComponent();
     SetupLayouts();
     ConnectSignals();
@@ -68,51 +70,50 @@ void Widget::ConnectSignals() {
 
 }
 
-void Widget::showAllObj() {
-   QTreeWidget* treeAllObj = new QTreeWidget();
-   QStringList tmp;
-   //tmp << <<
-   treeAllObj->setHeaderLabels(tmp);
-   treeAllObj->setSortingEnabled(true);
-
-
-   layoutRightSide->addWidget(treeAllObj);
-}
-
-void Widget::showDayObj() {
+void Widget::ShowAllObj() {
 
 }
 
-void Widget::showWeekObj() {
+void Widget::ShowDayObj() {
 
 }
 
-void Widget::showMonthObj() {
+void Widget::ShowWeekObj() {
 
 }
 
+void Widget::ShowMonthObj() {
+
+}
 
 
 
 void Widget::slotRadioButtonClicked() {
     if (radioAll->isChecked()) {
-        showAllObj();
+        ShowAllObj();
     }
     if (radioDay->isChecked()) {
-        showDayObj();
+        ShowDayObj();
     }
     if (radioWeek->isChecked()) {
-       showWeekObj();
+       ShowWeekObj();
     }
     if (radioMonth->isChecked()) {
-       showMonthObj();
+       ShowMonthObj();
     }
 }
 
 void Widget::slotOpenDialogAddObj() {
     AddObjDialog* dialAdd = new AddObjDialog();
     if (dialAdd->exec() == QDialog::Accepted) {
-        // тут посохранять все данные
+        if (dialAdd->isFilled()) {
+           // тут посохранять все данные
+
+        }
+        else {
+            dialAdd->ShowWarning();
+            //заставить ждать
+        }
     }
     delete dialAdd;
 
