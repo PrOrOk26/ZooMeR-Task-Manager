@@ -49,6 +49,10 @@ void AddObjDialog::InitializeComponent() {
     cbNotification->addItems(tmp);
     lNotification->setBuddy(cbNotification);
 
+    lWarning = new QLabel("Не все поля заполнены!");
+    lWarning->setPalette(QPalette(Qt::red));
+    lWarning->hide();
+
     //Layouts
     mlay = new QVBoxLayout();
     layForButton = new QHBoxLayout();
@@ -81,6 +85,8 @@ void AddObjDialog::SetupLayouts() {
     mlay->addWidget(lDescription);
     mlay->addWidget(teDescription);
 
+    mlay->addWidget(lWarning);
+
     mlay->addLayout(layForButton);
 
     //set
@@ -91,4 +97,14 @@ void AddObjDialog::ConnectSignals() {
     connect(pbSave, SIGNAL(clicked(bool)), SLOT(accept()));
     connect(pbCancel, SIGNAL(clicked(bool)), SLOT(reject()));
     //connect(cbNotification, SIGNAL(currentIndexChanged(QString)), SLOT()
+}
+
+bool AddObjDialog::isFilled() {
+    if (this->leName->text().isEmpty()) return false;
+
+    return true;
+}
+
+void AddObjDialog::ShowWarning() {
+    lWarning->show();
 }
