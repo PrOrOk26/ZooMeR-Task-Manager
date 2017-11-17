@@ -101,7 +101,6 @@ void AddObjDialog::SetupLayouts() {
 void AddObjDialog::ConnectSignals() {
     connect(pbSave, SIGNAL(clicked(bool)), SLOT(isFilled()));
     connect(pbCancel, SIGNAL(clicked(bool)), SLOT(reject()));
-    //connect(cbNotification, SIGNAL(currentIndexChanged(QString)), SLOT()
 }
 
 void AddObjDialog::isFilled() {
