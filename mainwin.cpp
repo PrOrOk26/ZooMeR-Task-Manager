@@ -12,16 +12,21 @@ Widget::Widget(QWidget *parent) :
 
 
     InitializeComponent();
-    SetupLayouts();
+    ReadSettings();
     ConnectSignals();
+    SetupLayouts();
+
+
 }
 
 Widget::~Widget()
 {
+    WriteSettings();
     delete ui;
 }
 
 void Widget::InitializeComponent() {
+    settings = new QSettings("ZooMeR", "Планировщик задач", this);
     buttonAddObj = new QPushButton("Добавить задачу");
     buttonAddObj->setDefault(true); // button in focus
 
@@ -29,7 +34,6 @@ void Widget::InitializeComponent() {
     radioDay = new QRadioButton("&На день");
     radioWeek = new QRadioButton("&На неделю");
     radioMonth = new QRadioButton("&На месяц");
-    radioAll->setChecked(true);
 
     //Layouts
     mainLayout = new QBoxLayout(QBoxLayout::LeftToRight);
@@ -60,7 +64,6 @@ void Widget::SetupLayouts() {
     this->setLayout(mainLayout);
 }
 
-
 void Widget::ConnectSignals() {
     connect(buttonAddObj, SIGNAL(clicked(bool)), SLOT(slotOpenDialogAddObj()));
     connect(radioAll, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
@@ -68,6 +71,35 @@ void Widget::ConnectSignals() {
     connect(radioWeek, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
     connect(radioMonth, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
 
+}
+
+void Widget::ReadSettings() {
+    settings->beginGroup("/Settings");
+        int sWidth = settings->value("/width", width()).toInt();
+        int sHeight = settings->value("/height", height()).toInt();
+        bool ra = settings->value("/ra", true).toBool();
+        bool rd = settings->value("/rd", false).toBool();
+        bool rw = settings->value("/rw", false).toBool();
+        bool rm = settings->value("/rm", false).toBool();
+
+        radioAll->setChecked(ra);
+        radioDay->setChecked(rd);
+        radioWeek->setChecked(rw);
+        radioMonth->setChecked(rm);
+
+        this->resize(sWidth, sHeight);
+    settings->endGroup();
+}
+
+void Widget::WriteSettings() {
+    settings->beginGroup("/Settings");
+        settings->setValue("/width", this->width());
+        settings->setValue("/height", this->height());
+        settings->setValue("/ra", radioAll->isChecked());
+        settings->setValue("/rd", radioDay->isChecked());
+        settings->setValue("/rw", radioWeek->isChecked());
+        settings->setValue("/rm", radioMonth->isChecked());
+    settings->endGroup();
 }
 
 void Widget::ShowAllObj() {
@@ -103,17 +135,11 @@ void Widget::slotRadioButtonClicked() {
     }
 }
 
+
 void Widget::slotOpenDialogAddObj() {
     AddObjDialog* dialAdd = new AddObjDialog();
     if (dialAdd->exec() == QDialog::Accepted) {
-        if (dialAdd->isFilled()) {
-           // тут посохранять все данные
-
-        }
-        else {
-            dialAdd->ShowWarning();
-            //заставить ждать
-        }
+        //сохранить данные
     }
     delete dialAdd;
 
