@@ -6,11 +6,17 @@ AddObjDialog::AddObjDialog(QWidget *parent) :
     setWindowFlags (windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     InitializeComponent();
+    ReadSettings();
     SetupLayouts();
     ConnectSignals();
 }
+AddObjDialog::~AddObjDialog() {
+    WriteSettings();
+}
 
 void AddObjDialog::InitializeComponent() {
+    settings = new QSettings("ZooMeR", "Планировщик задач", this);
+
     pbSave = new QPushButton("Сохранить");
     pbCancel = new QPushButton("Отмена");
 
@@ -49,8 +55,7 @@ void AddObjDialog::InitializeComponent() {
     cbNotification->addItems(tmp);
     lNotification->setBuddy(cbNotification);
 
-    lWarning = new QLabel("Не все поля заполнены!");
-    lWarning->setPalette(QPalette(Qt::red));
+    lWarning = new QLabel("<font color=red>Заполните поле \"Название\"</font");
     lWarning->hide();
 
     //Layouts
@@ -94,17 +99,32 @@ void AddObjDialog::SetupLayouts() {
 }
 
 void AddObjDialog::ConnectSignals() {
-    connect(pbSave, SIGNAL(clicked(bool)), SLOT(accept()));
+    connect(pbSave, SIGNAL(clicked(bool)), SLOT(isFilled()));
     connect(pbCancel, SIGNAL(clicked(bool)), SLOT(reject()));
     //connect(cbNotification, SIGNAL(currentIndexChanged(QString)), SLOT()
 }
 
-bool AddObjDialog::isFilled() {
-    if (this->leName->text().isEmpty()) return false;
-
-    return true;
+void AddObjDialog::isFilled() {
+    if (!(this->leName->text().isEmpty())) this->accept();
+    else ShowWarning();
 }
 
 void AddObjDialog::ShowWarning() {
     lWarning->show();
+}
+
+void AddObjDialog::ReadSettings() {
+    settings->beginGroup("/Settings");
+        int sW = settings->value("/w", width()).toInt();
+        int sH = settings->value("/h", height()).toInt();
+
+        this->resize(sW, sH);
+    settings->endGroup();
+}
+
+void AddObjDialog::WriteSettings() {
+    settings->beginGroup("/Settings");
+        settings->setValue("/w", this->width());
+        settings->setValue("/h", this->height());
+    settings->endGroup();
 }
