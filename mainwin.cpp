@@ -9,19 +9,17 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("Планировщик задач");
-
+    this->setWindowIcon(QIcon(":resource/icon.png"));
 
     InitializeComponent();
     ReadSettings();
     ConnectSignals();
     SetupLayouts();
-
-
+    CreateSystemTray();
 }
 
 Widget::~Widget()
 {
-    WriteSettings();
     delete ui;
 }
 
@@ -78,6 +76,29 @@ void Widget::ConnectSignals() {
     connect(radioMonth, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
 }
 
+void Widget::CreateSystemTray() {
+    QAction* pactShowHide = new QAction("&Показать/скрыть окно приложения", this);
+    connect(pactShowHide, SIGNAL(triggered()), this, SLOT(slotShowHide()));
+
+    QAction* pactQuit = new QAction("&Выход", this);
+    connect(pactQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    mContMenu = new QMenu(this);
+    mContMenu->addAction(pactShowHide);
+    mContMenu->addAction(pactQuit);
+
+    stTrayIcon = new QSystemTrayIcon(this);
+    stTrayIcon->setContextMenu(mContMenu);
+    stTrayIcon->setToolTip("Планировщик задач");
+    stTrayIcon->setIcon(QPixmap(":resource/icon.png"));
+}
+
+void Widget::closeEvent(QCloseEvent* pe) {
+    WriteSettings();
+    stTrayIcon->show();
+    hide();
+}
+
 void Widget::ReadSettings() {
     settings->beginGroup("/Settings");
         int sWidth = settings->value("/width", width()).toInt();
@@ -107,6 +128,11 @@ void Widget::WriteSettings() {
     settings->endGroup();
 }
 
+void Widget::ShowRemember() {
+    stTrayIcon->showMessage("Выполните задачу:", "",
+                            QSystemTrayIcon::Information, 7000);
+}
+
 void Widget::ShowAllObj() {
 
 }
@@ -123,7 +149,9 @@ void Widget::ShowMonthObj() {
 
 }
 
-
+void Widget::slotShowHide() {
+    setVisible(!isVisible());
+}
 
 void Widget::slotRadioButtonClicked() {
     if (radioAll->isChecked()) {
