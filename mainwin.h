@@ -22,6 +22,7 @@ private:
     void InitializeComponent();
     void SetupLayouts();
     void ConnectSignals();
+    void CreateSystemTray();
 
     void ShowAllObj();
     void ShowDayObj();
@@ -30,6 +31,8 @@ private:
 
     void WriteSettings();
     void ReadSettings();
+
+    void ShowRemember();
     //myVar
     QPushButton* buttonAddObj;
     QPushButton* buttonAddGroup;
@@ -47,10 +50,17 @@ private:
     QBoxLayout* mainLayout;
 
     QSettings* settings;
+
+    QSystemTrayIcon* stTrayIcon;
+    QMenu* mContMenu;
+protected:
+    virtual void closeEvent(QCloseEvent* pe);
 public slots:
     void slotOpenDialogAddGroup();
     void slotOpenDialogAddObj();
     void slotRadioButtonClicked();
+
+    void slotShowHide();
 };
 
 #endif // WIDGET_H
