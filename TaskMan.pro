@@ -27,14 +27,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     mainwin.cpp \
-    addobjdialog.cpp
+    addobjdialog.cpp \
+    addgroupdialog.cpp
 
 HEADERS += \
     mainwin.h \
-    addobjdialog.h
+    addobjdialog.h \
+    addgroupdialog.h
 
 FORMS += \
         widget.ui
 
 DISTFILES += \
     idea
+
+RESOURCES += \
+    resources.qrc
