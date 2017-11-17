@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QtWidgets>
-
+#include <QSettings>
 
 class AddObjDialog : public QDialog {
     Q_OBJECT
@@ -26,6 +26,8 @@ private:
     QTimeEdit* teDate;
     QSpinBox* sbImportance;
     QLineEdit* leTag;
+
+    QSettings* settings;
     //повтор
     QPlainTextEdit* teDescription;
     QComboBox* cbNotification;
@@ -39,12 +41,15 @@ private:
     void InitializeComponent();
     void SetupLayouts();
     void ConnectSignals();
+
+    void WriteSettings();
+    void ReadSettings();
 public:
     AddObjDialog(QWidget *parent = 0);
-    bool isFilled();
+    ~AddObjDialog();
     void ShowWarning();
 public slots:
-
+    void isFilled();
 
 };
 
