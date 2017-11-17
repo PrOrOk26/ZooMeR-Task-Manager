@@ -27,8 +27,10 @@ Widget::~Widget()
 
 void Widget::InitializeComponent() {
     settings = new QSettings("ZooMeR", "Планировщик задач", this);
+
     buttonAddObj = new QPushButton("Добавить задачу");
     buttonAddObj->setDefault(true); // button in focus
+    buttonAddGroup = new QPushButton("Добавить группу");
 
     radioAll = new QRadioButton("&Все");
     radioDay = new QRadioButton("&На день");
@@ -40,6 +42,7 @@ void Widget::InitializeComponent() {
     layoutLeftSide = new QVBoxLayout();
     layoutRightSide = new QVBoxLayout();
     layoutForRadio = new QVBoxLayout();
+    layForButton = new QHBoxLayout();
     groupOfRadio = new QGroupBox("&Показать:");
 }
 
@@ -53,8 +56,10 @@ void Widget::SetupLayouts() {
     layoutForRadio->addWidget(radioWeek);
     layoutForRadio->addWidget(radioMonth);
 
+    layForButton->addWidget(buttonAddGroup);
+    layForButton->addWidget(buttonAddObj);
     layoutRightSide->addStretch();
-    layoutRightSide->addWidget(buttonAddObj);
+    layoutRightSide->addLayout(layForButton);
 
     //set
     groupOfRadio->setLayout(layoutForRadio);
@@ -66,11 +71,11 @@ void Widget::SetupLayouts() {
 
 void Widget::ConnectSignals() {
     connect(buttonAddObj, SIGNAL(clicked(bool)), SLOT(slotOpenDialogAddObj()));
+    connect(buttonAddGroup, SIGNAL(clicked(bool)), SLOT(slotOpenDialogAddGroup()));
     connect(radioAll, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
     connect(radioDay, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
     connect(radioWeek, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
     connect(radioMonth, SIGNAL(clicked(bool)), SLOT(slotRadioButtonClicked()));
-
 }
 
 void Widget::ReadSettings() {
@@ -145,3 +150,11 @@ void Widget::slotOpenDialogAddObj() {
 
 }
 
+void Widget::slotOpenDialogAddGroup() {
+    AddGroupDialog* dialGroup = new AddGroupDialog();
+    if (dialGroup->exec() == QDialog::Accepted) {
+        //сохранить данные
+    }
+    delete dialGroup;
+
+}
