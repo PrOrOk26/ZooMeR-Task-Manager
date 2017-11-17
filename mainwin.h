@@ -1,8 +1,6 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
-#include <QtWidgets>
 #include "addobjdialog.h"
 
 
@@ -30,6 +28,8 @@ private:
     void ShowWeekObj();
     void ShowMonthObj();
 
+    void WriteSettings();
+    void ReadSettings();
     //myVar
     QPushButton* buttonAddObj;
     QRadioButton* radioAll;
@@ -45,7 +45,9 @@ private:
 
     QBoxLayout* mainLayout;
 
+    QSettings* settings;
 public slots:
+
     void slotOpenDialogAddObj();
     void slotRadioButtonClicked();
 };
