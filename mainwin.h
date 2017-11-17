@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include "addobjdialog.h"
-
+#include "addgroupdialog.h"
 
 namespace Ui {
 class Widget;
@@ -32,6 +32,7 @@ private:
     void ReadSettings();
     //myVar
     QPushButton* buttonAddObj;
+    QPushButton* buttonAddGroup;
     QRadioButton* radioAll;
     QRadioButton* radioDay;
     QRadioButton* radioWeek;
@@ -42,12 +43,12 @@ private:
     QVBoxLayout* layoutRightSide;
     QVBoxLayout* layoutLeftSide;
     QVBoxLayout* layoutForRadio;
-
+    QHBoxLayout* layForButton;
     QBoxLayout* mainLayout;
 
     QSettings* settings;
 public slots:
-
+    void slotOpenDialogAddGroup();
     void slotOpenDialogAddObj();
     void slotRadioButtonClicked();
 };
