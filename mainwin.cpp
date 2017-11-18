@@ -91,6 +91,11 @@ void Widget::CreateSystemTray() {
     stTrayIcon->setContextMenu(mContMenu);
     stTrayIcon->setToolTip("Планировщик задач");
     stTrayIcon->setIcon(QPixmap(":resource/icon.png"));
+
+    connect(stTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                               SLOT(slotTrayActivated(QSystemTrayIcon::ActivationReason)));
+
+    stTrayIcon->show();
 }
 
 void Widget::closeEvent(QCloseEvent* pe) {
@@ -151,6 +156,12 @@ void Widget::ShowMonthObj() {
 
 void Widget::slotShowHide() {
     setVisible(!isVisible());
+}
+
+void Widget::slotTrayActivated(QSystemTrayIcon::ActivationReason reason) {
+    if (reason == QSystemTrayIcon::DoubleClick) {
+        setVisible(true);
+    }
 }
 
 void Widget::slotRadioButtonClicked() {
