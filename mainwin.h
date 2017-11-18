@@ -61,6 +61,7 @@ public slots:
     void slotRadioButtonClicked();
 
     void slotShowHide();
+    void slotTrayActivated(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // WIDGET_H
