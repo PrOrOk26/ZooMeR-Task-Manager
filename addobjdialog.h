@@ -15,7 +15,6 @@ private:
     QLabel* lDate;
     QLabel* lImportance;
     QLabel* lTag;
-    QLabel* lRegular;
     QLabel* lDescription;
     QLabel* lNotification;
 
@@ -28,13 +27,25 @@ private:
     QLineEdit* leTag;
 
     QSettings* settings;
-    //повтор
+    QGroupBox* gbRegular;
     QPlainTextEdit* teDescription;
     QComboBox* cbNotification;
+
+    //дни недели
+    QCheckBox* mon;
+    QCheckBox* tue;
+    QCheckBox* wed;
+    QCheckBox* thurs;
+    QCheckBox* fri;
+    QCheckBox* sat;
+    QCheckBox* sun;
 
     //Layouts
     QVBoxLayout* mlay;
     QHBoxLayout* layForButton;
+    QVBoxLayout* layForRegLeft;
+    QVBoxLayout* layForRegRight;
+    QHBoxLayout* layForReg;
     QHBoxLayout* layForDate;
 
     //Functions
