@@ -40,8 +40,20 @@ void AddObjDialog::InitializeComponent() {
     leTag = new QLineEdit();
     lTag->setBuddy(leTag);
 
-    lRegular = new QLabel("&Повторять");
-    //тут че-то
+    gbRegular = new QGroupBox("Повторять:");
+    gbRegular->setCheckable(true);
+    gbRegular->setChecked(false);
+    
+
+    //week
+    mon = new QCheckBox("Понедельник");
+    tue = new QCheckBox("Вторник");
+    wed= new QCheckBox("Среда");
+    thurs = new QCheckBox("Четверг");
+    fri= new QCheckBox("Пятница");
+    sat= new QCheckBox("Суббота");
+    sun = new QCheckBox("Воскресенье");
+
 
     lDescription = new QLabel("&Описание:");
     teDescription = new QPlainTextEdit();
@@ -62,6 +74,9 @@ void AddObjDialog::InitializeComponent() {
     mlay = new QVBoxLayout();
     layForButton = new QHBoxLayout();
     layForDate = new QHBoxLayout();
+    layForReg = new QHBoxLayout();
+    layForRegLeft = new QVBoxLayout();
+    layForRegRight = new QVBoxLayout();
 }
 
 void AddObjDialog::SetupLayouts() {
@@ -72,6 +87,18 @@ void AddObjDialog::SetupLayouts() {
 
     layForDate->addWidget(deDate);
     layForDate->addWidget(teDate);
+
+    layForRegLeft->addWidget(mon);
+    layForRegLeft->addWidget(tue);
+    layForRegLeft->addWidget(wed);
+    layForRegLeft->addWidget(thurs);
+    layForRegRight->addWidget(fri);
+    layForRegRight->addWidget(sat);
+    layForRegRight->addWidget(sun);
+
+    layForReg->addLayout(layForRegLeft);
+    layForReg->addLayout(layForRegRight);
+    gbRegular->setLayout(layForReg);
 
     mlay->addWidget(lName);
     mlay->addWidget(leName);
@@ -85,7 +112,7 @@ void AddObjDialog::SetupLayouts() {
     mlay->addWidget(lTag);
     mlay->addWidget(leTag);
 
-    mlay->addWidget(lRegular);
+    mlay->addWidget(gbRegular);
 
     mlay->addWidget(lDescription);
     mlay->addWidget(teDescription);
