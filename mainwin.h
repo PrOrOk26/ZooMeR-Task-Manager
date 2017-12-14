@@ -3,6 +3,7 @@
 
 #include "addobjdialog.h"
 #include "addgroupdialog.h"
+#include "db.h"
 
 namespace Ui {
 class Widget;
@@ -15,7 +16,11 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+    QTreeView* treeTask;
+    QTreeView* treeDoneTask;
 
+    QStandardItemModel* actmodel;
+    QStandardItemModel* donemodel;
 private:
     Ui::Widget *ui;
     //myFunc
@@ -23,16 +28,17 @@ private:
     void SetupLayouts();
     void ConnectSignals();
     void CreateSystemTray();
-
-    void ShowAllObj();
-    void ShowDayObj();
-    void ShowWeekObj();
-    void ShowMonthObj();
+    void EmitCheckSignal();
+    void CheckRemember();
 
     void WriteSettings();
     void ReadSettings();
 
-    void ShowRemember();
+    void Repeat(QString id);
+    void ShowRemember(QString remember, qint64 n);
+    void BuildModel(QStandardItemModel* model, int donenumb);
+    void SetupTree();
+    void UpdateTree();
     //myVar
     QPushButton* buttonAddObj;
     QPushButton* buttonAddGroup;
@@ -42,6 +48,7 @@ private:
     QRadioButton* radioMonth;
 
     QGroupBox* groupOfRadio;
+    QTabWidget* tabs;
 
     QVBoxLayout* layoutRightSide;
     QVBoxLayout* layoutLeftSide;
@@ -51,6 +58,8 @@ private:
 
     QSettings* settings;
 
+    DB* database;
+
     QSystemTrayIcon* stTrayIcon;
     QMenu* mContMenu;
 protected:
@@ -59,9 +68,13 @@ public slots:
     void slotOpenDialogAddGroup();
     void slotOpenDialogAddObj();
     void slotRadioButtonClicked();
-
+    void slotItemChanged(QStandardItem* item);
+    void slotStartInsert(QString group_name);
     void slotShowHide();
     void slotTrayActivated(QSystemTrayIcon::ActivationReason reason);
+signals:
+    void ShowWarning(TypeOfWarning type);
+    void AcceptGroup();
 };
 
 #endif // WIDGET_H
