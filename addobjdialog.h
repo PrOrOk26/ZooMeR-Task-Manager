@@ -4,49 +4,13 @@
 #include <QWidget>
 #include <QtWidgets>
 #include <QSettings>
+#include <QtSql>
 
 class AddObjDialog : public QDialog {
     Q_OBJECT
 private:
     QPushButton* pbSave;
     QPushButton* pbCancel;
-
-    QLabel* lName;
-    QLabel* lDate;
-    QLabel* lImportance;
-    QLabel* lTag;
-    QLabel* lDescription;
-    QLabel* lNotification;
-
-    QLabel* lWarning;
-
-    QLineEdit* leName;
-    QDateEdit* deDate;
-    QTimeEdit* teDate;
-    QSpinBox* sbImportance;
-    QLineEdit* leTag;
-
-    QSettings* settings;
-    QGroupBox* gbRegular;
-    QPlainTextEdit* teDescription;
-    QComboBox* cbNotification;
-
-    //дни недели
-    QCheckBox* mon;
-    QCheckBox* tue;
-    QCheckBox* wed;
-    QCheckBox* thurs;
-    QCheckBox* fri;
-    QCheckBox* sat;
-    QCheckBox* sun;
-
-    //Layouts
-    QVBoxLayout* mlay;
-    QHBoxLayout* layForButton;
-    QVBoxLayout* layForRegLeft;
-    QVBoxLayout* layForRegRight;
-    QHBoxLayout* layForReg;
-    QHBoxLayout* layForDate;
 
     //Functions
     void InitializeComponent();
@@ -55,7 +19,38 @@ private:
 
     void WriteSettings();
     void ReadSettings();
-public:
+
+    //Layouts
+    QVBoxLayout* mlay;
+    QHBoxLayout* layForButton;
+    QHBoxLayout* layForDate;
+    QHBoxLayout* layForReg;
+    QHBoxLayout* layForRem;
+
+
+    QLabel* lName;
+    QLabel* lDate;
+    QLabel* lImportance;
+    QLabel* lGroup;
+    QLabel* lRegular;
+    QLabel* lNotification;
+    QLabel* lDescription;    
+
+    QLabel* lWarning;
+
+ public:
+    QLineEdit* leName;
+    QDateEdit* deDate;
+    QTimeEdit* teDate;
+    QSpinBox* sbImportance;
+    QComboBox* cbGroup;
+    QSpinBox* sbRegular;
+    QSpinBox* sbNotification;
+    QPlainTextEdit* teDescription;
+
+
+    QSettings* settings;
+
     AddObjDialog(QWidget *parent = 0);
     ~AddObjDialog();
     void ShowWarning();
