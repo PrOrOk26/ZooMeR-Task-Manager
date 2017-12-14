@@ -5,11 +5,13 @@
 #include <QtWidgets>
 #include <QSettings>
 
+enum TypeOfWarning{EMPTY, NOT_UN};
+
 class AddGroupDialog: public QDialog {
     Q_OBJECT
 private:
     QLabel* lGroupName;
-    QLineEdit* leGroupName;
+
     QPushButton* pAdd;
     QPushButton* pCancel;
 
@@ -24,10 +26,16 @@ private:
     void SetupLayouts();
     void ConnectSignals();
 public:
+    QLineEdit* leGroupName;
+
     AddGroupDialog(QWidget *parent = 0);
-    void ShowWarning();
+
 public slots:
     void isFilled();
+    void slotShowWarning(TypeOfWarning type);
+    void slotHideWarning();
+signals:
+    void StartInsert(QString group_name);
 };
 
 #endif // ADDGROUPDIALOG_H
