@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
     mainwin.cpp \
     addobjdialog.cpp \
-    addgroupdialog.cpp
+    addgroupdialog.cpp \
+    db.cpp
 
 HEADERS += \
     mainwin.h \
     addobjdialog.h \
-    addgroupdialog.h
+    addgroupdialog.h \
+    db.h
 
 FORMS += \
         widget.ui
