@@ -29,43 +29,42 @@ void AddObjDialog::InitializeComponent() {
     teDate = new QTimeEdit(QTime(23, 0));
     lDate->setBuddy(lDate);
 
-
     lImportance = new QLabel("&Приоритет:");
     sbImportance = new QSpinBox();
     sbImportance->setRange(1, 5);
     sbImportance->setWrapping(true);
     lImportance->setBuddy(sbImportance);
 
-    lTag = new QLabel("&Тэг:");
-    leTag = new QLineEdit();
-    lTag->setBuddy(leTag);
+    lGroup = new QLabel("&Группа:");
+    cbGroup = new QComboBox();
+    //заполняем список для комбобокса групп
+    QSqlQuery query;
+    if(!query.exec("SELECT Group_name FROM Group_info")) {
+        QMessageBox::critical(0,("obj, cb"),
+                        (query.lastError().text()),QMessageBox::Cancel);
+    }
+    QSqlRecord rec = query.record();
+    while (query.next()) {
+        cbGroup->addItem(query.value(rec.indexOf("Group_name")).toString());
+    }
+    lGroup->setBuddy(cbGroup);
 
-    gbRegular = new QGroupBox("Повторять:");
-    gbRegular->setCheckable(true);
-    gbRegular->setChecked(false);
-    
+    lRegular = new QLabel("&Повторять каждые:");
+    sbRegular = new QSpinBox();
+    sbRegular->setFixedWidth(50);
+    sbRegular->setMinimum(0);
+    lRegular->setBuddy(sbRegular);
 
-    //week
-    mon = new QCheckBox("Понедельник");
-    tue = new QCheckBox("Вторник");
-    wed= new QCheckBox("Среда");
-    thurs = new QCheckBox("Четверг");
-    fri= new QCheckBox("Пятница");
-    sat= new QCheckBox("Суббота");
-    sun = new QCheckBox("Воскресенье");
-
+    lNotification = new QLabel("&Уведомлять за:");
+    sbNotification = new QSpinBox();
+    sbNotification->setFixedWidth(50);
+    sbNotification->setMinimum(0);
+    lNotification->setBuddy(sbNotification);
 
     lDescription = new QLabel("&Описание:");
     teDescription = new QPlainTextEdit();
     teDescription->setFixedHeight(50);
     lDescription->setBuddy(teDescription);
-
-    lNotification = new QLabel("&Уведомлять:");
-    cbNotification = new QComboBox();
-    QStringList tmp;
-    tmp << "Нет" << "В день события" << "За три дня" << "За неделю";
-    cbNotification->addItems(tmp);
-    lNotification->setBuddy(cbNotification);
 
     lWarning = new QLabel("<font color=red>Заполните поле \"Название\"</font");
     lWarning->hide();
@@ -75,8 +74,7 @@ void AddObjDialog::InitializeComponent() {
     layForButton = new QHBoxLayout();
     layForDate = new QHBoxLayout();
     layForReg = new QHBoxLayout();
-    layForRegLeft = new QVBoxLayout();
-    layForRegRight = new QVBoxLayout();
+    layForRem = new QHBoxLayout();
 }
 
 void AddObjDialog::SetupLayouts() {
@@ -88,17 +86,12 @@ void AddObjDialog::SetupLayouts() {
     layForDate->addWidget(deDate);
     layForDate->addWidget(teDate);
 
-    layForRegLeft->addWidget(mon);
-    layForRegLeft->addWidget(tue);
-    layForRegLeft->addWidget(wed);
-    layForRegLeft->addWidget(thurs);
-    layForRegRight->addWidget(fri);
-    layForRegRight->addWidget(sat);
-    layForRegRight->addWidget(sun);
-
-    layForReg->addLayout(layForRegLeft);
-    layForReg->addLayout(layForRegRight);
-    gbRegular->setLayout(layForReg);
+    layForReg->addWidget(lRegular);
+    layForReg->addWidget(sbRegular);
+    layForReg->addWidget(new QLabel("дней"));
+    layForRem->addWidget(lNotification);
+    layForRem->addWidget(sbNotification);
+    layForRem->addWidget(new QLabel("дней"));
 
     mlay->addWidget(lName);
     mlay->addWidget(leName);
@@ -109,10 +102,11 @@ void AddObjDialog::SetupLayouts() {
     mlay->addWidget(lImportance);
     mlay->addWidget(sbImportance);
 
-    mlay->addWidget(lTag);
-    mlay->addWidget(leTag);
+    mlay->addWidget(lGroup);
+    mlay->addWidget(cbGroup);
 
-    mlay->addWidget(gbRegular);
+    mlay->addLayout(layForReg);
+    mlay->addLayout(layForRem);
 
     mlay->addWidget(lDescription);
     mlay->addWidget(teDescription);
