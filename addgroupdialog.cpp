@@ -1,5 +1,6 @@
 #include "addgroupdialog.h"
 
+
 AddGroupDialog::AddGroupDialog(QWidget *parent) :
     QDialog(parent) {
     this->setWindowTitle("Добавить группу");
@@ -13,9 +14,10 @@ AddGroupDialog::AddGroupDialog(QWidget *parent) :
 void AddGroupDialog::InitializeComponent() {
     lGroupName = new QLabel("Название группы:");
     leGroupName = new QLineEdit();
+
     pAdd = new QPushButton("Добавить");
     pCancel = new QPushButton("Отмена");
-    lWarning = new QLabel("<font color=red>Введите название группы</font>");
+    lWarning = new QLabel();
     lWarning->hide();
     //Layouts
     mlay = new QVBoxLayout();
@@ -38,13 +40,28 @@ void AddGroupDialog::SetupLayouts() {
 void AddGroupDialog::ConnectSignals() {
     connect(pAdd, SIGNAL(clicked(bool)), SLOT(isFilled()));
     connect(pCancel, SIGNAL(clicked(bool)), SLOT(reject()));
+    connect(leGroupName, SIGNAL(textEdited(QString)), SLOT(slotHideWarning()));
 }
 
 void AddGroupDialog::isFilled() {
-    if (!(this->leGroupName->text().isEmpty())) this->accept();
-    else ShowWarning();
+    if (!(this->leGroupName->text().isEmpty())) {
+        emit StartInsert(this->leGroupName->text());
+    }
+    else {
+        slotShowWarning(TypeOfWarning::EMPTY);
+    }
 }
 
-void AddGroupDialog::ShowWarning() {
+void AddGroupDialog::slotShowWarning(TypeOfWarning type) {
+    if (type == EMPTY) {
+        lWarning->setText("<font color=red>Введите название группы</font>");
+    }
+    else {
+        lWarning->setText("<font color=red>Такая группа уже есть</font>");
+    }
     lWarning->show();
+}
+
+void AddGroupDialog::slotHideWarning() {
+    lWarning->hide();
 }
